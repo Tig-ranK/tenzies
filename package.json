@@ -1,4 +1,8 @@
 {
+  "prettier": {
+    "singleQuote": true,
+    "jsxSingleQuote": true
+  },
   "name": "tenzies",
   "version": "0.1.0",
   "private": true,
