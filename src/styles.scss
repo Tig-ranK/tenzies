@@ -19,15 +19,15 @@ $mainText: #2b283a;
 }
 
 @media screen and (max-width: 500px) {
+  
   .main {
     margin: auto;
     aspect-ratio: 1/1;
-    width: 90%;
     height: auto;
   }
-
+  
   :root {
-    font-size: 16px;
+    font-size: 18px;
   }
 
 }
@@ -39,16 +39,21 @@ body {
   align-items: center;
   background: #0b2434;
   height: 100vh;
+  width: 100vw;
 }
 
 .main {
-  width: 20rem;
-  height: 19rem;
+  max-width: 450px;
+  max-height: 450px;
+  width: 95%;
+  // height: 90%;
   padding: 2rem;
+  padding-bottom: 0.5rem;
   font-family: Karla, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 5px;
   background-color: #f5f5f5;
   border-radius: 5px;
@@ -118,11 +123,10 @@ body {
 }
 
 .stats {
-  bottom: 5px;
-  left: 5px;
   font-size: 0.7rem;
-  // font-weight: 600;
+  font-weight: 400;
   align-self: flex-start;
+  margin-top: 6px;
   margin-left: -30px;
 }
 
