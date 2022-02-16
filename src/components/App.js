@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import Die from './Die';
 import { randSix } from '../helpers';
+// npm packages
 import { nanoid } from 'nanoid';
+// confetti
 import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
+// components
+import Die from './Die';
+import Stats from './Stats';
 
 export default function App() {
+  const { width, height } = useWindowSize();
   const [dice, setDice] = useState(newDice());
   const [tenzies, setTenzies] = useState(false);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     function checkWin() {
@@ -32,12 +39,14 @@ export default function App() {
   }
 
   function updateDice() {
+    setCount((prev) => prev + 1);
     if (!tenzies) {
       setDice((prev) =>
         prev.map((elem) => (elem.isHeld ? elem : { ...elem, value: randSix() }))
       );
     } else {
       setTenzies(false);
+      setCount(0);
       setDice(newDice());
     }
   }
@@ -56,7 +65,7 @@ export default function App() {
 
   return (
     <main className='main'>
-      {tenzies && <Confetti />}
+      {tenzies && <Confetti width={width} height={height} />}
       <h1>Tenzies</h1>
       <h3>
         Roll until all dice are the same. Click each die to freeze it at its
@@ -66,6 +75,7 @@ export default function App() {
       <button onClick={() => updateDice()}>
         {tenzies ? 'New Game' : 'Roll'}
       </button>
+      <Stats count={count} />
     </main>
   );
 }

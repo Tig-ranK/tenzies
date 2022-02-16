@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Dice(props) {
+export default function Die(props) {
   return (
     <button
       className={props.isHeld ? 'dice selected' : 'dice'}

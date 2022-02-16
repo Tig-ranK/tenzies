@@ -2,7 +2,8 @@
   box-sizing: border-box;
 
   h1,
-  h3 {
+  h3,
+  p {
     margin: 0;
   }
 
@@ -11,10 +12,25 @@
   }
 }
 
-:root {
-  font-size: 20px;
-}
 $mainText: #2b283a;
+
+:root {
+  font-size: 22px;
+}
+
+@media screen and (max-width: 500px) {
+  .main {
+    margin: auto;
+    aspect-ratio: 1/1;
+    width: 90%;
+    height: auto;
+  }
+
+  :root {
+    font-size: 16px;
+  }
+
+}
 
 body {
   margin: 0;
@@ -33,7 +49,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: space-around;
   gap: 5px;
   background-color: #f5f5f5;
   border-radius: 5px;
@@ -41,7 +56,6 @@ body {
 
 .main > h1 {
   font-size: 1.75rem;
-  // margin-bottom: 5px;
   font-weight: 700;
   letter-spacing: -0.03em;
   color: $mainText;
@@ -87,7 +101,6 @@ body {
   font-family: Karla;
   font-weight: bold;
   font-size: 1.25rem;
-  // padding: 5px 10.5px;
   height: 2.1rem;
   width: 2.1rem;
   cursor: pointer;
@@ -102,5 +115,14 @@ body {
   grid-template-columns: repeat(5, 1fr);
   gap: 18px;
   padding: 24px;
-  // margin-bottom: 5px;
+}
+
+.stats {
+  bottom: 5px;
+  left: 5px;
+  font-size: 0.7rem;
+}
+
+.stopwatch {
+  font-size: 50px;
 }
