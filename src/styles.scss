@@ -111,6 +111,11 @@ body {
   &.selected {
     background-color: #59e391;
   }
+
+  @media screen and (max-width:500px) {
+    height: 2.2rem;
+    width: 2.2rem;
+  }
 }
 
 .dice-grid {
@@ -119,7 +124,8 @@ body {
   gap: 18px;
   padding: 24px;
   @media screen and (max-width: 500px) {
-    gap: 12px;
+    // gap: 12px;
+    gap: 15px;
   }
 }
 
