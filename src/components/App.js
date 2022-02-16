@@ -1,47 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import Dice from './Dice';
+import Die from './Die';
+import { randSix } from '../helpers';
+import { nanoid } from 'nanoid';
+import Confetti from 'react-confetti';
 
 export default function App() {
-  const [dice, setDice] = useState([
-    true,
-    true,
-    false,
-    false,
-    false,
-    true,
-    false,
-    true,
-    false,
-    false,
-  ]);
+  const [dice, setDice] = useState(newDice());
 
-  let diceArray = [];
-  for (let i = 0; i < 10; i++) {
-    diceArray.push(
-      <Dice
-        key={i}
-        selected={dice[i]}
-        content={i}
-        handleClick={() => handleClick(i)}
-      />
+  function newDice() {
+    let diceArray = [];
+    for (let i = 0; i < 10; i++) {
+      diceArray.push({
+        id: nanoid(),
+        value: randSix(),
+        isHeld: false,
+      });
+    }
+    return diceArray;
+  }
+
+  function updateDice() {
+    setDice((prev) =>
+      prev.map((elem) => (elem.isHeld ? elem : { ...elem, value: randSix() }))
+    );
+  }
+  function hold(id) {
+    setDice((prev) =>
+      prev.map((elem) => {
+        return id === elem.id ? { ...elem, isHeld: !elem.isHeld } : elem;
+      })
     );
   }
 
-  function handleClick(i) {
-    console.log(`${i} was clicked`);
-    setDice((prev) => {
-      let diceCopy = prev.slice();
-      diceCopy[i] = !diceCopy[i];
-      return diceCopy;
-    });
-  }
-
-  function handleRoll() {
-    console.log(randomOutOfSix());
-  }
-  function randomOutOfSix() {
-    return Math.ceil(Math.random() * 6);
-  }
+  const mappedDice = dice.map((elem) => (
+    <Die {...elem} key={elem.id} hold={() => hold(elem.id)} />
+  ));
   return (
     <main className='main'>
       <h1>Tenzies</h1>
@@ -49,8 +42,8 @@ export default function App() {
         Roll until all dice are the same. Click each die to freeze it at its
         current value between rolls.
       </h3>
-      <div className='dice-grid'>{diceArray}</div>
-      <button onClick={handleRoll}>Roll</button>
+      <div className='dice-grid'>{mappedDice}</div>
+      <button onClick={() => updateDice()}>Roll</button>
     </main>
   );
 }

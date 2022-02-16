@@ -3,10 +3,10 @@ import React from 'react';
 export default function Dice(props) {
   return (
     <button
-      className={props.selected ? 'dice selected' : 'dice'}
-      onClick={props.handleClick}
+      className={props.isHeld ? 'dice selected' : 'dice'}
+      onClick={props.hold}
     >
-      {props.content}
+      {props.value}
     </button>
   );
 }
