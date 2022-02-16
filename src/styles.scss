@@ -19,17 +19,14 @@ $mainText: #2b283a;
 }
 
 @media screen and (max-width: 500px) {
-  
   .main {
+    width: 95%;
     margin: auto;
-    aspect-ratio: 1/1;
-    height: auto;
-  }
-  
-  :root {
-    font-size: 18px;
   }
 
+  :root {
+    font-size: 20px;
+  }
 }
 
 body {
@@ -37,16 +34,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0b2434;
   height: 100vh;
-  width: 100vw;
+  background: hsl(203, 65%, 12%);
 }
 
 .main {
-  max-width: 450px;
   max-height: 450px;
-  width: 95%;
-  // height: 90%;
+  max-width: 450px;
   padding: 2rem;
   padding-bottom: 0.5rem;
   font-family: Karla, sans-serif;
@@ -98,6 +92,10 @@ body {
   }
 }
 
+.root {
+  height: 100vh;
+}
+
 .dice {
   background-color: #fff;
   color: #2b283a;
@@ -105,7 +103,7 @@ body {
   border-radius: 4px;
   font-family: Karla;
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   height: 2.1rem;
   width: 2.1rem;
   cursor: pointer;
@@ -117,9 +115,12 @@ body {
 
 .dice-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template: auto auto / repeat(5, 1fr);
   gap: 18px;
   padding: 24px;
+  @media screen and (max-width: 500px) {
+    gap: 12px;
+  }
 }
 
 .stats {
