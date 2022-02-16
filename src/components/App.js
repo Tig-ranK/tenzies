@@ -14,6 +14,8 @@ export default function App() {
   const [dice, setDice] = useState(newDice());
   const [tenzies, setTenzies] = useState(false);
   const [count, setCount] = useState(0);
+  // stopwatch start state 👇
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
     function checkWin() {
@@ -25,6 +27,13 @@ export default function App() {
       setTenzies(true);
     }
   }, [dice]);
+
+  useEffect(() => {
+    if (tenzies) {
+      setStart(false);
+      console.log('Stopwatch stopped.');
+    }
+  }, [tenzies]);
 
   function newDice() {
     let diceArray = [];
@@ -38,9 +47,10 @@ export default function App() {
     return diceArray;
   }
 
-  function updateDice() {
+  function rollDice() {
     setCount((prev) => prev + 1);
     if (!tenzies) {
+      setStart(true);
       setDice((prev) =>
         prev.map((elem) => (elem.isHeld ? elem : { ...elem, value: randSix() }))
       );
@@ -72,10 +82,10 @@ export default function App() {
         current value between rolls.
       </h3>
       <div className='dice-grid'>{mappedDice}</div>
-      <button onClick={() => updateDice()}>
+      <button onClick={() => rollDice()}>
         {tenzies ? 'New Game' : 'Roll'}
       </button>
-      <Stats count={count} />
+      <Stats count={count} start={start} setStart={setStart} />
     </main>
   );
 }
