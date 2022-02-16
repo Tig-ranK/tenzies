@@ -8,17 +8,16 @@ export default function App() {
   const [dice, setDice] = useState(newDice());
   const [tenzies, setTenzies] = useState(false);
 
-  function checkWin() {
-    // check if every element is held AND
-    // every element is equal to the first one, i.e. they're all the same
-    return dice.every((elem) => elem.isHeld && elem.value === dice[0].value);
-  }
-
   useEffect(() => {
+    function checkWin() {
+      // check if every element is held AND
+      // every element is equal to the first one, i.e. they're all the same
+      return dice.every((elem) => elem.isHeld && elem.value === dice[0].value);
+    }
     if (checkWin()) {
       setTenzies(true);
     }
-  }, [dice, checkWin]);
+  }, [dice]);
 
   function newDice() {
     let diceArray = [];
@@ -38,8 +37,8 @@ export default function App() {
         prev.map((elem) => (elem.isHeld ? elem : { ...elem, value: randSix() }))
       );
     } else {
-      setTenzies(false)
-      setDice(newDice())
+      setTenzies(false);
+      setDice(newDice());
     }
   }
 
