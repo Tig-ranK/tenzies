@@ -18,7 +18,7 @@ export default function App() {
     if (checkWin()) {
       setTenzies(true);
     }
-  }, [dice]);
+  }, [dice, checkWin]);
 
   function newDice() {
     let diceArray = [];
