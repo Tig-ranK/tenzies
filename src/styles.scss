@@ -31,14 +31,22 @@ $mainText: #2b283a;
 
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   background: hsl(203, 65%, 12%);
 }
 
+#root {
+  position: relative;
+  height: 100vh;
+}
+
 .main {
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  // centering ☝️
+
   max-height: 450px;
   max-width: 450px;
   padding: 2rem;

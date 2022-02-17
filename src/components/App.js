@@ -42,7 +42,7 @@ export default function App() {
       console.log('Stopwatch stopped.');
       if (best.current === 0 || time < best.current) {
         console.log('new best');
-        setBest((prev) => ({previous: prev.current, current: time }));
+        setBest((prev) => ({ previous: prev.current, current: time }));
         setTime(time);
       }
     }
@@ -89,24 +89,26 @@ export default function App() {
   ));
 
   return (
-    <main className='main'>
+    <>
       {tenzies && <Confetti width={width} height={height} />}
-      <h1>Tenzies</h1>
-      <h3>
-        Roll until all dice are the same. Click each die to freeze it at its
-        current value between rolls.
-      </h3>
-      <div className='dice-grid'>{mappedDice}</div>
-      <button onClick={() => rollDice()}>
-        {tenzies ? 'New Game' : 'Roll'}
-      </button>
-      <Stats
-        count={count}
-        start={start}
-        time={time}
-        setTime={setTime}
-        best={best}
-      />
-    </main>
+      <main className='main'>
+        <h1>Tenzies</h1>
+        <h3>
+          Roll until all dice are the same. Click each die to freeze it at its
+          current value between rolls.
+        </h3>
+        <div className='dice-grid'>{mappedDice}</div>
+        <button onClick={() => rollDice()}>
+          {tenzies ? 'New Game' : 'Roll'}
+        </button>
+        <Stats
+          count={count}
+          start={start}
+          time={time}
+          setTime={setTime}
+          best={best}
+        />
+      </main>
+    </>
   );
 }
