@@ -46,7 +46,7 @@ export default function App() {
         setTime(time);
       }
     }
-  }, [tenzies]);
+  }, [tenzies, best, time]);
 
   function newDice() {
     let diceArray = [];

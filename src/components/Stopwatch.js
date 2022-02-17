@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 export default function Stopwatch({ start, time, setTime }) {
   useEffect(() => {
@@ -11,7 +11,7 @@ export default function Stopwatch({ start, time, setTime }) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [start]);
+  }, [start, setTime]);
 
   return (
     <>
