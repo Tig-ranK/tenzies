@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Stopwatch({ start, setStart, time, setTime }) {
+export default function Stopwatch({ start, time, setTime }) {
   useEffect(() => {
     let interval = null;
     if (start) {
