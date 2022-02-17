@@ -18,10 +18,12 @@ export default function App() {
   // stopwatch start state 👇
   const [start, setStart] = useState(false);
   const [time, setTime] = useState(0);
-  const [best, setBest] = useState({
-    current: 0,
-    previous: 0,
-  });
+  const [best, setBest] = useState(
+    JSON.parse(localStorage.getItem('personalBest')) || {
+      current: 0,
+      previous: 0,
+    }
+  );
   // localStorage.getItem('personalBest')
 
   useEffect(() => {
@@ -43,6 +45,10 @@ export default function App() {
       if (best.current === 0 || time < best.current) {
         console.log('new best');
         setBest((prev) => ({ previous: prev.current, current: time }));
+        localStorage.setItem(
+          'personalBest',
+          JSON.stringify({ current: time, previous: 0 })
+        );
         setTime(time);
       }
     }
