@@ -18,7 +18,10 @@ export default function App() {
   // stopwatch start state 👇
   const [start, setStart] = useState(false);
   const [time, setTime] = useState(0);
-  const [best, setBest] = useState(0);
+  const [best, setBest] = useState({
+    current: 0,
+    previous: 0,
+  });
   // localStorage.getItem('personalBest')
 
   useEffect(() => {
@@ -37,9 +40,10 @@ export default function App() {
     if (tenzies) {
       setStart(false);
       console.log('Stopwatch stopped.');
-      if (best === 0 || time < best) {
+      if (best.current === 0 || time < best.current) {
         console.log('new best');
-        setBest(time)
+        setBest((prev) => ({previous: prev.current, current: time }));
+        setTime(time);
       }
     }
   }, [tenzies]);
@@ -99,7 +103,6 @@ export default function App() {
       <Stats
         count={count}
         start={start}
-        setStart={setStart}
         time={time}
         setTime={setTime}
         best={best}
