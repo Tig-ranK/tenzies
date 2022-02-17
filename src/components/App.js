@@ -24,7 +24,6 @@ export default function App() {
       previous: 0,
     }
   );
-  // localStorage.getItem('personalBest')
 
   useEffect(() => {
     function checkWin() {
