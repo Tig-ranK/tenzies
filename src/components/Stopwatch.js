@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Stopwatch({ start, setStart }) {
-  const [time, setTime] = useState(0);
-
+export default function Stopwatch({ start, setStart, time, setTime }) {
   useEffect(() => {
     let interval = null;
     if (start) {
-      setTime(0)
       interval = setInterval(() => {
         setTime((prev) => prev + 10);
       }, 10);

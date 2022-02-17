@@ -10,13 +10,16 @@ import Die from './Die';
 import Stats from './Stats';
 
 export default function App() {
-  const {width, height} = useWindowSize()
+  const { width, height } = useWindowSize();
   // confetti canvas dimensions ☝️
   const [dice, setDice] = useState(newDice());
   const [tenzies, setTenzies] = useState(false);
   const [count, setCount] = useState(0);
   // stopwatch start state 👇
   const [start, setStart] = useState(false);
+  const [time, setTime] = useState(0);
+  const [best, setBest] = useState(0);
+  // localStorage.getItem('personalBest')
 
   useEffect(() => {
     function checkWin() {
@@ -29,10 +32,15 @@ export default function App() {
     }
   }, [dice]);
 
+  // stopping the stopwatch and updating best time
   useEffect(() => {
     if (tenzies) {
       setStart(false);
       console.log('Stopwatch stopped.');
+      if (best === 0 || time < best) {
+        console.log('new best');
+        setBest(time)
+      }
     }
   }, [tenzies]);
 
@@ -57,7 +65,9 @@ export default function App() {
       );
     } else {
       setTenzies(false);
+      // reseting stats 👇
       setCount(0);
+      setTime(0);
       setDice(newDice());
     }
   }
@@ -76,7 +86,7 @@ export default function App() {
 
   return (
     <main className='main'>
-      {tenzies && <Confetti width={width} height ={height} />}
+      {tenzies && <Confetti width={width} height={height} />}
       <h1>Tenzies</h1>
       <h3>
         Roll until all dice are the same. Click each die to freeze it at its
@@ -86,7 +96,14 @@ export default function App() {
       <button onClick={() => rollDice()}>
         {tenzies ? 'New Game' : 'Roll'}
       </button>
-      <Stats count={count} start={start} setStart={setStart} />
+      <Stats
+        count={count}
+        start={start}
+        setStart={setStart}
+        time={time}
+        setTime={setTime}
+        best={best}
+      />
     </main>
   );
 }
