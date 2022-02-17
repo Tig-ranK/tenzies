@@ -13,7 +13,6 @@ export default function Stats({ count, start, time, setTime, best }) {
         <span className='time-dif'>
           <Stopwatch time={best.previous-best.current}/>
         </span>
-        {/* <span className='time-dif'>{best.current - best.previous}</span> */}
       </p>
     </div>
   );
