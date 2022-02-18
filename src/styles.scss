@@ -152,6 +152,14 @@ body {
   height: 2.1rem;
   width: 2.1rem;
   gap: 1.5px;
+  cursor: pointer;
+  &.selected {
+    background-color: #59e391;
+
+    .dot.display {
+      background-color: #59e391;
+    }
+  }
 }
 
 .dot {
@@ -161,7 +169,7 @@ body {
   height: 8.5px;
   width: 8.5px;
   border-radius: 50%;
-  &.selected {
+  &.display {
     background-color: #fff;
   }
 }
