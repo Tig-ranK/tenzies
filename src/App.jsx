@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { randSix } from '../helpers';
+import { randSix } from './helpers';
 // npm packages
 import { nanoid } from 'nanoid';
 // confetti
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 // components
-import Die from './Die';
-import Stats from './Stats';
+import Die from './components/Die';
+import Stats from './components/Stats';
 
 export default function App() {
   const { width, height } = useWindowSize();
