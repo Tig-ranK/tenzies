@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { randSix } from './helpers';
 // npm packages
 import { nanoid } from 'nanoid';
@@ -6,8 +6,8 @@ import { nanoid } from 'nanoid';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 // components
-import Die from './components/Die';
 import Stats from './components/Stats';
+import Dice from './components/Dice';
 
 export default function App() {
   const { width, height } = useWindowSize();
@@ -26,12 +26,13 @@ export default function App() {
   );
 
   useEffect(() => {
-    function checkWin() {
-      // check if every element is held AND
-      // every element is equal to the first one, i.e. they're all the same
-      return dice.every((elem) => elem.isHeld && elem.value === dice[0].value);
-    }
-    if (checkWin()) {
+    // check if every element is held AND
+    // every element is equal to the first one, i.e. they're all the same
+    const isWin = dice.every(
+      (elem) => elem.isHeld && elem.value === dice[0].value
+    );
+
+    if (isWin) {
       setTenzies(true);
     }
   }, [dice]);
@@ -40,9 +41,7 @@ export default function App() {
   useEffect(() => {
     if (tenzies) {
       setStart(false);
-      console.log('Stopwatch stopped.');
       if (best.current === 0 || time < best.current) {
-        console.log('new best');
         setBest((prev) => ({ previous: prev.current, current: time }));
         localStorage.setItem(
           'personalBest',
@@ -89,10 +88,6 @@ export default function App() {
     );
   }
 
-  const mappedDice = dice.map((elem) => (
-    <Die {...elem} key={elem.id} hold={() => hold(elem.id)} />
-  ));
-
   return (
     <>
       {tenzies && <Confetti width={width} height={height} />}
@@ -102,10 +97,8 @@ export default function App() {
           Roll until all dice are the same. Click each die to freeze it at its
           current value between rolls.
         </h3>
-        <div className='dice-grid'>{mappedDice}</div>
-        <button onClick={() => rollDice()}>
-          {tenzies ? 'New Game' : 'Roll'}
-        </button>
+        <Dice dice={dice} hold={hold} />
+        <button onClick={rollDice}>{tenzies ? 'New Game' : 'Roll'}</button>
         <Stats
           count={count}
           start={start}

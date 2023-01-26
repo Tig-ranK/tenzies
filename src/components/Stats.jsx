@@ -1,4 +1,3 @@
-import React from 'react';
 import Stopwatch from './Stopwatch';
 
 export default function Stats({ count, start, time, setTime, best }) {

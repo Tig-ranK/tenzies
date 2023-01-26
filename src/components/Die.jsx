@@ -1,4 +1,3 @@
-import React from 'react';
 import Dots from './Dots';
 
 export default function Die(props) {
