@@ -1,15 +1,15 @@
 * {
   box-sizing: border-box;
+}
 
-  h1,
-  h3,
-  p {
-    margin: 0;
-  }
+h1,
+h3,
+p {
+  margin: 0;
+}
 
-  button {
-    border: none;
-  }
+button {
+  border: none;
 }
 
 $mainText: #2b283a;
@@ -129,7 +129,6 @@ body {
   gap: 18px;
   padding: 24px;
   @media screen and (max-width: 500px) {
-    // gap: 12px;
     gap: 15px;
   }
 }

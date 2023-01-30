@@ -52,18 +52,6 @@ export default function App() {
     }
   }, [tenzies, best, time]);
 
-  function newDice() {
-    let diceArray = [];
-    for (let i = 0; i < 10; i++) {
-      diceArray.push({
-        id: nanoid(),
-        value: randSix(),
-        isHeld: false,
-      });
-    }
-    return diceArray;
-  }
-
   function rollDice() {
     setCount((prev) => prev + 1);
     if (!tenzies) {
@@ -78,6 +66,7 @@ export default function App() {
       setTime(0);
       setDice(newDice());
     }
+    
   }
 
   function hold(id) {
@@ -109,4 +98,16 @@ export default function App() {
       </main>
     </>
   );
+}
+
+function newDice() {
+  let diceArray = [];
+  for (let i = 0; i < 10; i++) {
+    diceArray.push({
+      id: nanoid(),
+      value: randSix(),
+      isHeld: false,
+    });
+  }
+  return diceArray;
 }
