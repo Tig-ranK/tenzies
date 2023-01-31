@@ -12,7 +12,7 @@ export default function App() {
   const { width, height } = useWindowSize();
   // confetti canvas dimensions ☝️
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { dice, count, start, tenzies, time, currentBest, prevBest } = state;
+  const { dice, count, start, tenzies, time, currentBest } = state;
 
   // stop stopwatch + update best time
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function App() {
       dispatch({ type: 'dice:roll' });
     }
   }
-
+  
   return (
     <>
       {tenzies && <Confetti width={width} height={height} />}
@@ -45,7 +45,6 @@ export default function App() {
           start={start}
           time={time}
           currentBest={currentBest}
-          prevBest={prevBest}
           dispatch={dispatch}
         />
       </main>
@@ -60,7 +59,6 @@ const initialState = {
   start: false,
   time: 0,
   currentBest: localStorage.getItem('currentBest') ?? 0,
-  prevBest: localStorage.getItem('prevBest') ?? 0,
 };
 
 const reducer = (state, action) => {
@@ -110,13 +108,11 @@ const reducer = (state, action) => {
       };
     case 'tenzies':
       if (currentBest === 0 || time < currentBest) {
-        localStorage.setItem('prevBest', currentBest);
         localStorage.setItem('currentBest', time);
         return {
           ...state,
           start: false,
-          prevBest: currentBest,
-          currentBest: time, // fix bug with 1 tick diff between currentBest and time
+          currentBest: time,
           time: time,
         };
       } else {
