@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { randSix } from './helpers';
 // npm packages
-import { nanoid } from 'nanoid';
-// confetti
-import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
+import { nanoid } from 'nanoid';
+import Confetti from 'react-confetti';
 // components
 import Stats from './components/Stats';
 import Dice from './components/Dice';
@@ -12,69 +11,23 @@ import Dice from './components/Dice';
 export default function App() {
   const { width, height } = useWindowSize();
   // confetti canvas dimensions ☝️
-  const [dice, setDice] = useState(newDice());
-  const [tenzies, setTenzies] = useState(false);
-  const [count, setCount] = useState(0);
-  // stopwatch start state 👇
-  const [start, setStart] = useState(false);
-  const [time, setTime] = useState(0);
-  const [best, setBest] = useState(
-    JSON.parse(localStorage.getItem('personalBest')) || {
-      current: 0,
-      previous: 0,
-    }
-  );
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    // check if every element is held AND
-    // every element is equal to the first one, i.e. they're all the same
-    const isWin = dice.every(
-      (elem) => elem.isHeld && elem.value === dice[0].value
-    );
-
-    if (isWin) {
-      setTenzies(true);
-    }
-  }, [dice]);
+  const { dice, count, start, tenzies, time, currentBest, prevBest } = state;
 
   // stopping the stopwatch and updating best time
   useEffect(() => {
     if (tenzies) {
-      setStart(false);
-      if (best.current === 0 || time < best.current) {
-        setBest((prev) => ({ previous: prev.current, current: time }));
-        localStorage.setItem(
-          'personalBest',
-          JSON.stringify({ current: time, previous: 0 })
-        );
-        setTime(time);
-      }
+      dispatch({ type: 'tenzies' });
     }
-  }, [tenzies, best, time]);
+  }, [tenzies]);
 
   function rollDice() {
-    setCount((prev) => prev + 1);
-    if (!tenzies) {
-      setStart(true);
-      setDice((prev) =>
-        prev.map((elem) => (elem.isHeld ? elem : { ...elem, value: randSix() }))
-      );
+    if (tenzies) {
+      dispatch({ type: 'dice:new' });
     } else {
-      setTenzies(false);
-      // reseting stats 👇
-      setCount(0);
-      setTime(0);
-      setDice(newDice());
+      dispatch({ type: 'dice:roll' });
     }
-    
-  }
-
-  function hold(id) {
-    setDice((prev) =>
-      prev.map((elem) => {
-        return id === elem.id ? { ...elem, isHeld: !elem.isHeld } : elem;
-      })
-    );
   }
 
   return (
@@ -86,19 +39,95 @@ export default function App() {
           Roll until all dice are the same. Click each die to freeze it at its
           current value between rolls.
         </h3>
-        <Dice dice={dice} hold={hold} />
+        <Dice dice={dice} dispatch={dispatch} />
         <button onClick={rollDice}>{tenzies ? 'New Game' : 'Roll'}</button>
         <Stats
           count={count}
           start={start}
           time={time}
-          setTime={setTime}
-          best={best}
+          currentBest={currentBest}
+          prevBest={prevBest}
+          dispatch={dispatch}
         />
       </main>
     </>
   );
 }
+
+const reducer = (state, action) => {
+  const { dice, time, count, currentBest } = state;
+  switch (action.type) {
+    case 'tick': {
+      return {
+        ...state,
+        time: time + 10,
+      };
+    }
+    case 'hold':
+      const newState = {
+        ...state,
+        start: true,
+        dice: dice.map((elem) => {
+          return action.id === elem.id
+            ? { ...elem, isHeld: !elem.isHeld }
+            : elem;
+        }),
+      };
+      if (
+        newState.dice.every((elem) => elem.isHeld && elem.value === dice[0].value)
+      ) {
+        newState.tenzies = true;
+      }
+      return newState;
+    case 'dice:new':
+      return {
+        ...state,
+        time: 0,
+        count: 0,
+        tenzies: false,
+        dice: newDice(),
+      };
+    case 'dice:roll':
+      return {
+        ...state,
+        start: true,
+        count: count + 1,
+        dice: dice.map((elem) =>
+          elem.isHeld ? elem : { ...elem, value: randSix() }
+        ),
+      };
+    case 'tenzies':
+      if (currentBest === 0 || time < currentBest) {
+        return {
+          ...state,
+          start: false,
+          time: time,
+          prevBest: currentBest,
+          currentBest: time,
+        };
+      } else {
+        return {
+          ...state,
+          start: false,
+          time: time, 
+        };
+      }
+    default:
+      throw new Error(
+        `"${action.type}" is not a valid type for App.jsx reducer.`
+      );
+  }
+};
+
+const initialState = {
+  dice: newDice(),
+  tenzies: false,
+  count: 0,
+  start: false,
+  time: 0,
+  currentBest: 0, // TODO initiate with localStorage
+  prevBest: 0, // TODO initiate with localStorage
+};
 
 function newDice() {
   let diceArray = [];

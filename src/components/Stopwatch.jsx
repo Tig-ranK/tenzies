@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 
-export default function Stopwatch({ start, time, setTime }) {
+export default function Stopwatch({ start, time, dispatch }) {
   useEffect(() => {
     let interval = null;
     if (start) {
       interval = setInterval(() => {
-        setTime((prev) => prev + 10);
+        dispatch({ type: 'tick' });
       }, 10);
     } else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [start, setTime]);
+  }, [start, dispatch]);
 
   return (
     <>
