@@ -12,10 +12,9 @@ export default function App() {
   const { width, height } = useWindowSize();
   // confetti canvas dimensions ☝️
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const { dice, count, start, tenzies, time, currentBest, prevBest } = state;
 
-  // stopping the stopwatch and updating best time
+  // stop stopwatch + update best time
   useEffect(() => {
     if (tenzies) {
       dispatch({ type: 'tenzies' });
@@ -54,8 +53,19 @@ export default function App() {
   );
 }
 
+const initialState = {
+  dice: newDice(),
+  tenzies: false,
+  count: 0,
+  start: false,
+  time: 0,
+  currentBest: localStorage.getItem('currentBest') ?? 0,
+  prevBest: localStorage.getItem('prevBest') ?? 0,
+};
+
 const reducer = (state, action) => {
   const { dice, time, count, currentBest } = state;
+
   switch (action.type) {
     case 'tick': {
       return {
@@ -74,7 +84,9 @@ const reducer = (state, action) => {
         }),
       };
       if (
-        newState.dice.every((elem) => elem.isHeld && elem.value === dice[0].value)
+        newState.dice.every(
+          (elem) => elem.isHeld && elem.value === dice[0].value
+        )
       ) {
         newState.tenzies = true;
       }
@@ -98,18 +110,19 @@ const reducer = (state, action) => {
       };
     case 'tenzies':
       if (currentBest === 0 || time < currentBest) {
+        localStorage.setItem('prevBest', currentBest);
+        localStorage.setItem('currentBest', time);
         return {
           ...state,
           start: false,
-          time: time,
           prevBest: currentBest,
-          currentBest: time,
+          currentBest: time, // fix bug with 1 tick diff between currentBest and time
+          time: time,
         };
       } else {
         return {
           ...state,
           start: false,
-          time: time, 
         };
       }
     default:
@@ -117,16 +130,6 @@ const reducer = (state, action) => {
         `"${action.type}" is not a valid type for App.jsx reducer.`
       );
   }
-};
-
-const initialState = {
-  dice: newDice(),
-  tenzies: false,
-  count: 0,
-  start: false,
-  time: 0,
-  currentBest: 0, // TODO initiate with localStorage
-  prevBest: 0, // TODO initiate with localStorage
 };
 
 function newDice() {
